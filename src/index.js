@@ -49,24 +49,12 @@ function searchData(evt) {
 }
 
 function handlerLoadMore(entries, observer) {
-    
-    
-
-    if (!refs.searchInput.value) {
-        alert("Enter your request!")
-    }
-
     entries.forEach(entry => {
         if (entry.isIntersecting) {  
-            console.log("Page",page);
             page += 1;
             fetchData(refs.searchInput.value, page)    
             .then((data) => {                      
                 refs.gallery.insertAdjacentHTML("beforeend", createMarkup(data.hits));
-               
-
-                console.log("Total Pages", totalPages);
-
                     if (page === totalPages) {
                         observer.unobserve(refs.guard);
                         Notiflix.Notify.info('\"We\'re sorry, but you\'ve reached the end of search results.\"');
