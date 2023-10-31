@@ -55,6 +55,7 @@ function handlerLoadMore(entries, observer) {
             fetchData(refs.searchInput.value, page)    
             .then((data) => {                      
                 refs.gallery.insertAdjacentHTML("beforeend", createMarkup(data.hits));
+                
                     if (page === totalPages) {
                         observer.unobserve(refs.guard);
                         Notiflix.Notify.info('\"We\'re sorry, but you\'ve reached the end of search results.\"');
@@ -63,7 +64,7 @@ function handlerLoadMore(entries, observer) {
                 .catch(error => console.error(error));
             }
         });
-
+        initializeLightbox();
 }
 
 
@@ -100,7 +101,6 @@ new SimpleLightbox('.photo-card a', {
     captions: true,
     captionDelay: 250,
     captionSelector: 'img',
-    captionType: 'attr',
     captionsData: 'alt'
 });
 }
