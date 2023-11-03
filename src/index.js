@@ -33,10 +33,9 @@ function searchData(evt) {
         fetchData(inputValue, page)
             .then((data) => {
                 refs.gallery.innerHTML = createMarkup(data.hits);
-
-                totalPages = Math.floor(data.totalHits / data.hits.length);
+                slowScroll();       
                 initializeLightbox();
-               
+                totalPages = Math.floor(data.totalHits / data.hits.length);
                 Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
 
                 if (data.hits.length < data.totalHits) {
@@ -55,7 +54,7 @@ function handlerLoadMore(entries, observer) {
             fetchData(refs.searchInput.value, page)    
             .then((data) => {                      
                 refs.gallery.insertAdjacentHTML("beforeend", createMarkup(data.hits));
-                
+                 
                     if (page === totalPages) {
                         observer.unobserve(refs.guard);
                         Notiflix.Notify.info('\"We\'re sorry, but you\'ve reached the end of search results.\"');
@@ -64,7 +63,8 @@ function handlerLoadMore(entries, observer) {
                 .catch(error => console.error(error));
             }
         });
-        initializeLightbox();
+    initializeLightbox();
+    slowScroll(); 
 }
 
 
@@ -103,4 +103,11 @@ new SimpleLightbox('.photo-card a', {
     captionSelector: 'img',
     captionsData: 'alt'
 });
+}; 
+function slowScroll() {
+    const { height: cardHeight } = document.querySelector(".gallery").firstElementChild.getBoundingClientRect();
+    window.scrollBy({
+        top: cardHeight * 2,
+        behavior: "smooth",
+  });
 }
